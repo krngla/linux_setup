@@ -6,12 +6,13 @@ output=$output_dir/installscripts.sh
 if [ ! -d  $output_dir ]; then
 	mkdir $output_dir
 fi
-echo $output_dir
 [ -f $output ] && rm $output
 
 
 cat << 'EOF' > $output
 #!/bin/bash
+
+[ $# -ne 1 ] && echo "please provide username" && exit 1
 
 #Find start of payload
 PAYLOAD_LINE=$(awk '/^__PAYLOAD_BEGINS__/ { print NR + 1; exit 0; }' $0)
@@ -32,9 +33,10 @@ exit 0
 __PAYLOAD_BEGINS__ 
 EOF
 
-echo $output
+base=$(basename $PWD)
 
-tar --exclude={.git,$output_dir}  -zcpvO . >> $output 
-
+cd ..
+tar --exclude={.git,$output_dir}  -zcpvO $base >> $base/$output 
+cd $base
 chmod +x $output
 exit 0

@@ -51,12 +51,12 @@ sed -i.bak "s/^# %wheel ALL=(ALL:ALL) ALL/%wheel ALL=(ALL:ALL) ALL/" /etc/sudoer
 echo enter password for user:$user
 passwd $user
 if [ ! -d "/home/$user/tmp/" ]; then
-	echo creating tempfolder in 
+	echo creating tempfolder in
 	echo mkdir /home/$user/tmp
 	mkdir /home/$user/tmp
 fi
 
-cp -r ../$basedir /home/$user/tmp/ 
+cp -r ../$basedir /home/$user/tmp/
 
 #Logging into user to setup user specific details
 sudo -iu $user bash << 'EOF'
@@ -67,6 +67,7 @@ for f in sub/*.sh; do
 	bash "$f"
 done
 cd ~
-rm -rf tmp
 EOF
+rm -rf /home/$user/tmp
+
 exit 0
