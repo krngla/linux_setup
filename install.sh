@@ -62,7 +62,6 @@ cp -r ../$basedir /home/$user/tmp/
 sudo -iu $user bash << 'EOF'
 cd tmp/linux_setup
 ./gitcloner.sh
-~/projects/dotfiles/install.sh
 
 for f in sub/*.sh; do
 	bash "$f"
