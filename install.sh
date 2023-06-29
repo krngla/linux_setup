@@ -61,7 +61,6 @@ cp -r ../$basedir /home/$user/tmp/
 #Logging into user to setup user specific details
 sudo -iu $user bash << 'EOF'
 cd tmp/linux_setup
-./manage_dotfiles.sh
 ./gitcloner.sh
 
 for f in sub/*.sh; do

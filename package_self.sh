@@ -1,14 +1,16 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-if [ $# -ne 2 ]; then
-	echo please provide username
-	exit 1
-fi
+output_dir=rel
+output=$output_dir/installscripts.sh
 
-if [ ! -d  ../output ]; then
-	mkdir ../output
+if [ ! -d  $output_dir ]; then
+	mkdir $output_dir
 fi
-cat << 'EOF' > ../output/installscripts.sh
+echo $output_dir
+[ -f $output ] && rm $output
+
+
+cat << 'EOF' > $output
 #!/bin/bash
 
 #Find start of payload
@@ -29,8 +31,10 @@ rm -rf $dir_name
 exit 0
 __PAYLOAD_BEGINS__ 
 EOF
-base=$(basename $PWD)
-cd ..
-tar --exclude='./.git' -zcpvO $base >> output/installscripts.sh 
 
-chmod +x output/installscripts.sh
+echo $output
+
+tar --exclude={.git,$output_dir}  -zcpvO . >> $output 
+
+chmod +x $output
+exit 0
