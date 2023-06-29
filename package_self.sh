@@ -1,15 +1,22 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
+output_dir=rel
+output=$output_dir/installscripts.sh
+
+if [ ! -d  $output_dir ]; then
+	mkdir $output_dir
+fi
+echo $output_dir
+[ -f $output ] && rm $output
+
+
+cat << 'EOF' > $output
+#!/usr/bin/env bash
+#
 if [ $# -ne 2 ]; then
 	echo please provide username
 	exit 1
 fi
-
-if [ ! -d  ../output ]; then
-	mkdir ../output
-fi
-cat << 'EOF' > ../output/installscripts.sh
-#!/bin/bash
 
 echo $(basename $PWD)
 
@@ -26,8 +33,10 @@ rm -rf $dir_name
 exit 0
 __PAYLOAD_BEGINS__ 
 EOF
-base=$(basename $PWD)
-cd ..
-tar --exclude='./.git' -zcpvO $base >> output/installscripts.sh 
 
-chmod +x output/installscripts.sh
+echo $output
+
+tar --exclude={.git,$output_dir}  -zcpvO . >> $output 
+
+chmod +x $output
+exit 0
